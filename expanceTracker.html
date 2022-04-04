@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        #container{
+           display: flex;
+           justify-content: center;
+           font-size: 25px;
+           /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+        }
+        #container p{
+            margin-bottom: -0.2px;
+        }
+        #month{
+            font-size: 25px;
+        }
+
+        input{
+            font-size: 25px;
+            
+        }
+
+        #submit{
+            width: 100%;
+            background-color: blue;
+            color: white;
+            border-radius: 10px;
+            border: none;
+        }
+
+        #showContainer{
+            width: 80%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+            grid-gap: 10px;
+        }
+        #showContainer div{
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 5px;
+            height: 200px;
+            margin-top: 30px;
+        }
+
+        #showContainer div h2{
+            color:blue;
+            text-align: center;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h1 style="color: blue; text-align: center;" >Expance Tracker</h1>
+    <div id="container">
+        <form id="myForm">
+            <p id="pMonth">Select Month</p>
+            <select name="" id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="Marchr">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+
+            <p id="pIncome">Income</p>
+            <input type="number" id="income">
+            <p id="pExpence">Expence</p>
+            <input type="number" id="expence">
+            <br>
+            <br>
+            <input id="submit" type="submit">
+
+        </form>
+    </div>
+
+    <div id="showContainer">
+
+    </div>
+</body>
+<script>
+    document.getElementById("submit").addEventListener("click", myFunc)
+
+    function myFunc() {
+        event.preventDefault();
+        addData();
+    }
+
+    if (localStorage.getItem("data") == null) {
+
+        var dataArr = [];
+    } else {
+        dataArr = JSON.parse(localStorage.getItem("data"));
+        showData();
+    }
+
+
+    function addData() {
+
+
+
+        month = document.getElementById("month").value;
+        income = document.getElementById("income").value;
+        expence = document.getElementById("expence").value;
+        saving = income - expence;
+        var obj = {};
+
+        obj.month = month;
+        obj.income = income;
+        obj.expence = expence;
+        obj.saving = saving;
+        dataArr.push(obj);
+        console.log(obj);
+        localStorage.setItem('data', JSON.stringify(dataArr));
+        showData();
+    }
+
+    function showData() {
+
+        document.getElementById("showContainer").innerText = '';
+
+        dataArr.forEach(function (ele, i) {
+            var box = document.createElement('div');
+            
+
+            var mon = document.createElement("h2");
+            var inc = document.createElement("p");
+            var sav = document.createElement("p");
+            var exp = document.createElement("p");
+            var nl1 = document.createElement("br");
+            var nl2 = document.createElement("br");
+
+
+            mon.innerText = ele.month;
+            inc.innerText = ele.income;
+            sav.innerText = ele.saving;
+            exp.innerText = ele.expence
+
+            box.append(mon);
+            box.append("Your Income Is : ", inc.innerText);
+            box.append(nl1)
+            box.append(" Your Expence Is : ", exp.innerText);
+            box.append(nl2);
+            box.append(" Your Savings Is : ", sav.innerText);
+            document.querySelector("#showContainer").append(box);
+
+        });
+
+    }
+
+</script>
+
+</html>
